@@ -108,9 +108,14 @@ int main()
     
     // MARK: - 顶点输入数据
     float vertices[] = {
-        -0.5f, -0.5f, 0.0f, // left
-        0.5f, -0.5f, 0.0f, // right
-        0.0f,  0.5f, 0.0f  // top
+        // first triangle
+        -0.9f, -0.5f, 0.0f,  // left
+        -0.0f, -0.5f, 0.0f,  // right
+        -0.45f, 0.5f, 0.0f,  // top
+        // second triangle
+        0.0f, -0.5f, 0.0f,  // left
+        0.9f, -0.5f, 0.0f,  // right
+        0.45f, 0.5f, 0.0f   // top
     };
     
     // MARK: - 顶点数组对象(Vertex Array Object, VAO)
@@ -169,7 +174,7 @@ int main()
         // 绑定VAO
         glBindVertexArray(VAO);
         // 绘制（图元的类型, 顶点数组的起始索引, 绘制的顶点个数）
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
         
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
