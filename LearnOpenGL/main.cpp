@@ -107,37 +107,36 @@ int main()
     glDeleteShader(fragmentShader);
     
     // MARK: - 顶点输入数据
-    float vertices[] = {
-        // first triangle
+    float firstTriangle[] = {
         -0.9f, -0.5f, 0.0f,  // left
         -0.0f, -0.5f, 0.0f,  // right
         -0.45f, 0.5f, 0.0f,  // top
-        // second triangle
+    };
+    float secondTriangle[] = {
         0.0f, -0.5f, 0.0f,  // left
         0.9f, -0.5f, 0.0f,  // right
         0.45f, 0.5f, 0.0f   // top
     };
     
     // MARK: - 顶点数组对象(Vertex Array Object, VAO)
-    unsigned int VAO;
-    glGenVertexArrays(1, &VAO);
+    unsigned int VAOs[2];
+    glGenVertexArrays(2, VAOs);
     
     // MARK: - 顶点缓冲对象 Vertex Buffer Object VBO
     // VBO: 显存内管理顶点数据
     
     // 生成VBO对象
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
+    unsigned int VBOs[2];
+    glGenBuffers(2, VBOs);
     
     /// 1. 绑定VAO
-    glBindVertexArray(VAO);
+    glBindVertexArray(VAOs[0]);
     
     /// 2. 把顶点数组复制到缓冲中供OpenGL使用
     // 把新创建的缓冲绑定到GL_ARRAY_BUFFER目标上
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
     // 把顶点数据复制到当前绑定缓冲的内存中 (目标缓冲的类型, 传输数据的字节大小, 实际数据, (GL_STATIC_DRAW、GL_DYNAMIC_DRAW、GL_STREAM_DRAW)数据是否改变)
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    
+    glBufferData(GL_ARRAY_BUFFER, sizeof(firstTriangle), firstTriangle, GL_STATIC_DRAW);
     
     
     // MARK: - 链接着色器属性
@@ -146,6 +145,13 @@ int main()
     // 告诉OpenGL该如何解析顶点数据 (顶点属性的位置值 layout(location = 0),顶点属性大小 vec3, 数据类型, 是否希望数据被标准化(Normalize), 步长（stride）, 偏移量)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     // 以顶点属性位置值作为参数，启用顶点属性
+    glEnableVertexAttribArray(0);
+    
+    
+    glBindVertexArray(VAOs[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOs[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(secondTriangle), secondTriangle, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
     
     /// ???: 未知
@@ -172,9 +178,12 @@ int main()
         // 激活程序对象
         glUseProgram(shaderProgram);
         // 绑定VAO
-        glBindVertexArray(VAO);
+        glBindVertexArray(VAOs[0]);
         // 绘制（图元的类型, 顶点数组的起始索引, 绘制的顶点个数）
-        glDrawArrays(GL_TRIANGLES, 0, 6);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+        
+        glBindVertexArray(VAOs[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
         
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
         // -------------------------------------------------------------------------------
@@ -183,8 +192,8 @@ int main()
     }
 
     
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(2, VAOs);
+    glDeleteBuffers(2, VBOs);
     glDeleteProgram(shaderProgram);
     
     // glfw: terminate, clearing all previously allocated GLFW resources.
