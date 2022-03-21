@@ -22,7 +22,12 @@ const char *fragmentShaderSource = "#version 330 core\n"
     "{\n"
     "   FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
     "}\n\0";
-
+const char *fragmentShader2Source = "#version 330 core\n"
+    "out vec4 FragColor;\n"
+    "void main()\n"
+    "{\n"
+    "   FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);\n"
+    "}\n\0";
 int main()
 {
     // glfw: initialize and configure
@@ -88,6 +93,18 @@ int main()
         std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
     }
     
+    unsigned int fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+    glShaderSource(fragmentShader2, 1, &fragmentShader2Source, NULL);
+    glCompileShader(fragmentShader2);
+    
+    // check for shader compile errors
+    glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &success);
+    if(!success)
+    {
+        glGetShaderInfoLog(fragmentShader2, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+    
     // MARK: - 着色器程序对象
     // 着色器程序对象(Shader Program Object)是多个着色器合并之后并最终链接完成的版本。如果要使用刚才编译的着色器我们必须把它们链接(Link)为一个着色器程序对象，然后在渲染对象的时候激活这个着色器程序。已激活着色器程序的着色器将在我们发送渲染调用的时候被使用。
     unsigned int shaderProgram = glCreateProgram();
@@ -102,9 +119,24 @@ int main()
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
+    
+    unsigned int shaderProgram_yellow = glCreateProgram();
+    // 添加
+    glAttachShader(shaderProgram_yellow, vertexShader);
+    glAttachShader(shaderProgram_yellow, fragmentShader2);
+    // 链接
+    glLinkProgram(shaderProgram_yellow);
+    // check for linking errors
+    glGetProgramiv(shaderProgram_yellow, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgram_yellow, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
+    
     // 把着色器对象链接到程序对象以后，删除着色器对象.
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+    glDeleteShader(fragmentShader2);
     
     // MARK: - 顶点输入数据
     float firstTriangle[] = {
@@ -182,6 +214,7 @@ int main()
         // 绘制（图元的类型, 顶点数组的起始索引, 绘制的顶点个数）
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
+        glUseProgram(shaderProgram_yellow);
         glBindVertexArray(VAOs[1]);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         
@@ -195,7 +228,7 @@ int main()
     glDeleteVertexArrays(2, VAOs);
     glDeleteBuffers(2, VBOs);
     glDeleteProgram(shaderProgram);
-    
+    glDeleteProgram(shaderProgram_yellow);
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
     glfwTerminate();
