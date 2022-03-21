@@ -112,7 +112,8 @@ int main()
 
         // be sure to activate the shader before any calls to glUniform
         ourShader.use();
-
+        float offset = 0.5f;
+        ourShader.setFloat("xOffset", offset);
         
         glBindVertexArray(VAO);
         // render the triangle

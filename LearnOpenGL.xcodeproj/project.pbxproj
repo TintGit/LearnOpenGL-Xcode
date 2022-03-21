@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A3A6B6327E82E4600742D50 /* 3.3.shader.fs in Sources */ = {isa = PBXBuildFile; fileRef = 2A9974CA27E314F900EF5F3E /* 3.3.shader.fs */; };
-		2A3A6B6427E82E4600742D50 /* 3.3.shader.vs in Sources */ = {isa = PBXBuildFile; fileRef = 2A9974CB27E314FA00EF5F3E /* 3.3.shader.vs */; };
 		2A9974B627E1C83D00EF5F3E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A9974B527E1C83D00EF5F3E /* main.cpp */; };
 		2A9974C027E1C89500EF5F3E /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A9974BF27E1C89500EF5F3E /* OpenGL.framework */; };
 		2A9974C227E1C92600EF5F3E /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A9974C127E1C92600EF5F3E /* glad.c */; };
@@ -157,8 +155,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2A3A6B6327E82E4600742D50 /* 3.3.shader.fs in Sources */,
-				2A3A6B6427E82E4600742D50 /* 3.3.shader.vs in Sources */,
 				2A9974B627E1C83D00EF5F3E /* main.cpp in Sources */,
 				2A9974C227E1C92600EF5F3E /* glad.c in Sources */,
 			);
