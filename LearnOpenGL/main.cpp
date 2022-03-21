@@ -48,7 +48,6 @@ int main()
 
     // build and compile our shader zprogram
     // ------------------------------------
-//    Shader ourShader("4.1.texture.vs", "4.1.texture.fs");
     Shader ourShader("/Users/yanm/OpenGL/LearnOpenGL-Xcode/LearnOpenGL/4.1.texture.vs", "/Users/yanm/OpenGL/LearnOpenGL-Xcode/LearnOpenGL/4.1.texture.fs");
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -88,28 +87,27 @@ int main()
     glEnableVertexAttribArray(2);
 
 
-    // 生成并应用纹理
+    // load and create a texture
     // -------------------------
-    // 创建纹理对象
-    unsigned int texture;
-    glGenTextures(1, &texture);
-    
-    glBindTexture(GL_TEXTURE_2D, texture); // all upcoming GL_TEXTURE_2D operations now have effect on this texture object
-    // set the texture wrapping parameters 环绕方式
+    unsigned int texture1, texture2;
+    // texture 1
+    // ---------
+    glGenTextures(1, &texture1);
+    glBindTexture(GL_TEXTURE_2D, texture1);
+     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    // set texture filtering parameters 过滤方式
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true); // tell stb_image.h to flip loaded texture's on the y-axis.
     // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
     unsigned char *data = stbi_load("/Users/yanm/OpenGL/LearnOpenGL-Xcode/LearnOpenGL/container.jpg", &width, &height, &nrChannels, 0);
     if (data)
     {
-        // 图片数据生成到纹理对象（纹理目标，多级渐远纹理的级别，纹理储存格式，宽，高，一直为0，源图的格式，数据类型，图像数据）
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        // 这会为当前绑定的纹理自动生成所有需要的多级渐远纹理。
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else
@@ -117,6 +115,38 @@ int main()
         std::cout << "Failed to load texture" << std::endl;
     }
     stbi_image_free(data);
+    // texture 2
+    // ---------
+    glGenTextures(1, &texture2);
+    glBindTexture(GL_TEXTURE_2D, texture2);
+    // set the texture wrapping parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);    // set texture wrapping to GL_REPEAT (default wrapping method)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    // set texture filtering parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    // load image, create texture and generate mipmaps
+    data = stbi_load("/Users/yanm/OpenGL/LearnOpenGL-Xcode/LearnOpenGL/awesomeface.png", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
+    }
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+
+    // tell opengl for each sampler to which texture unit it belongs to (only has to be done once)
+    // -------------------------------------------------------------------------------------------
+    ourShader.use(); // don't forget to activate/use the shader before setting uniforms!
+    // either set it manually like so:
+    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
+    // or set it via the texture class
+    ourShader.setInt("texture2", 1);
+
 
 
     // render loop
@@ -132,8 +162,11 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // bind Texture
-        glBindTexture(GL_TEXTURE_2D, texture);
+        // bind textures on corresponding texture units
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, texture2);
 
         // render container
         ourShader.use();
