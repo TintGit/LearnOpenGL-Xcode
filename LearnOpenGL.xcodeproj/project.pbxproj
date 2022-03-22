@@ -47,6 +47,9 @@
 		2A3A6B6B27E869F800742D50 /* awesomeface.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = awesomeface.png; sourceTree = "<group>"; };
 		2A3A6B6C27E9764C00742D50 /* 5.1.transform.vs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 5.1.transform.vs; sourceTree = "<group>"; };
 		2A3A6B6D27E9764C00742D50 /* 5.1.transform.fs */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 5.1.transform.fs; sourceTree = "<group>"; };
+		2A3A6B6E27E99CA700742D50 /* 7.2.camera.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = 7.2.camera.vs; sourceTree = "<group>"; };
+		2A3A6B6F27E99CC800742D50 /* 7.2.camera.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = 7.2.camera.fs; sourceTree = "<group>"; };
+		2A3A6B7027E9A31900742D50 /* camera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
 		2A9974B227E1C83D00EF5F3E /* LearnOpenGL */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = LearnOpenGL; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A9974B527E1C83D00EF5F3E /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		2A9974BF27E1C89500EF5F3E /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -95,12 +98,15 @@
 				2A3A6B6627E856DF00742D50 /* stb_image_load.cpp */,
 				2A9974C127E1C92600EF5F3E /* glad.c */,
 				2A9974B527E1C83D00EF5F3E /* main.cpp */,
+				2A3A6B7027E9A31900742D50 /* camera.h */,
 				2A9974CA27E314F900EF5F3E /* 3.3.shader.fs */,
 				2A9974CB27E314FA00EF5F3E /* 3.3.shader.vs */,
 				2A3A6B6927E85A1C00742D50 /* 4.1.texture.fs */,
 				2A3A6B6A27E85A1C00742D50 /* 4.1.texture.vs */,
 				2A3A6B6D27E9764C00742D50 /* 5.1.transform.fs */,
 				2A3A6B6C27E9764C00742D50 /* 5.1.transform.vs */,
+				2A3A6B6E27E99CA700742D50 /* 7.2.camera.vs */,
+				2A3A6B6F27E99CC800742D50 /* 7.2.camera.fs */,
 			);
 			path = LearnOpenGL;
 			sourceTree = "<group>";
